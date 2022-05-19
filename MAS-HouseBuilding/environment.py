@@ -134,11 +134,11 @@ class BuildingEnvironment(Environment):
 
 
     def step(self):
-        
-        
+
+
         # Stage 1 - auction stage
         if self._auction_stage:
-            
+
             auction_item = self._construction_items[self._crt_item_idx]
             print('[Auction stage]')
             print("Item  : ",auction_item, end='')
@@ -147,11 +147,11 @@ class BuildingEnvironment(Environment):
             else:
                 auction_round = self._auction_status[auction_item]["round"]
                 if auction_round < self._num_auction_rounds:
-                    
+
                     # send an AuctioneerPerception to the house owner
                     item_budget = self._owner_agent.propose_item_budget(auction_item, auction_round)
 
-                    print(' /',item_budget)                    
+                    print(' /',item_budget)
 
                     # send a BidderPerception to the company agents
                     agent_bids: Dict[CompanyAgent, float] = {}
@@ -159,13 +159,13 @@ class BuildingEnvironment(Environment):
                         if ag.has_specialty(auction_item):
                             bid = ag.decide_bid(auction_item, auction_round, item_budget)
                             agent_bids[ag] = bid
-                            
+
                     print("    agent _bids : ",agent_bids.values())
-                    
+
                     # send result of auction round to house owner
                     responding_agents = [ag.name for ag in agent_bids if agent_bids[ag]]
                     print("responding agent are : ",responding_agents)
-                    
+
                     self._owner_agent.notify_auction_round_result(auction_item, auction_round, responding_agents)
 
                     # inform responding agent that they have won the auction
@@ -199,7 +199,7 @@ class BuildingEnvironment(Environment):
         elif self._negotiation_stage:
             print('[Negotiation stage]')
             # Stage 2 - negotiation stage
-            
+
             if self._crt_item_idx < len(self._construction_items):
                 negotiation_item = self._construction_items[self._crt_item_idx] # select current negotiation item
 
@@ -329,7 +329,7 @@ class BuildingEnvironment(Environment):
 
 if __name__ == "__main__":
     env = BuildingEnvironment(owner_cfg_file="config-ACME-project.cfg",
-                              companies_cfg_file="config-companies-2.cfg",
+                              companies_cfg_file="config-companies-1.cfg",
                               game_cfg_file="game.cfg")
     env.initialize()
 
